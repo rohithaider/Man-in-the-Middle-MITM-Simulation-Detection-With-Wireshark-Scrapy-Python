@@ -84,13 +84,13 @@ sudo arping -c 3 192.168.219.133
 
 <img width="657" alt="Screenshot 2025-05-26 at 10 58 07 PM" src="https://github.com/user-attachments/assets/de473561-c846-4deb-97fc-a63f094083ff" />
 
-##🧪 Packet Analysis using Wireshark
+## 🧪 Packet Analysis using Wireshark
 ### ✅ Step 1: Start Wireshark (on Victim)
-Open Wireshark
+- Open Wireshark
 
-Select your active interface (eth0 or ens33)
+- Select your active interface (eth0 or ens33)
 
-Start capturing
+- Start capturing
 
 ### ✅ Step 2: Apply Filters
 ARP Filter
@@ -102,6 +102,8 @@ arp
 - Multiple ARP replies without corresponding requests
 
 - One IP mapping to multiple MACs
+
+- Multiple IP are mapping into same MACs
 
 📸 Screenshot:
 We can see that an ARP queries are broadcast.
