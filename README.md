@@ -37,10 +37,7 @@ sudo apt install bettercap -y
 sudo apt update
 sudo apt install wireshark -y
 ```
-### Follow this GitHub Repository For Installing Elastic-Search, Kibana, Filebear & Suricata:
-```url
-https://github.com/samiul008ghub/soc_setup
-```
+
 ⚠️ During Wireshark install, select "NO" to prevent non-root users from capturing packets.
 
 ---
