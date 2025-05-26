@@ -1,7 +1,7 @@
 # 🔐 ARP Spoofing Man-in-the-Middle (MITM) Simulation & Detection
 
 > **Project Type**: Cybersecurity Lab  
-> **Environment**: 2 Virtual Machines (Kali Linux + Ubuntu/Windows)  
+> **Environment**: 2 Virtual Machines (Kali Linux + Ubuntu)  
 > **Goal**: Simulate an ARP Spoofing MITM attack, analyze it with Wireshark, and detect it using Python with Scrapy.
 
 ---
