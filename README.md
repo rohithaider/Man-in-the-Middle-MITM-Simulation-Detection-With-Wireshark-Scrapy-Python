@@ -99,3 +99,42 @@ sudo arping -c 3 192.168.219.133
 
 <img width="657" alt="Screenshot 2025-05-26 at 10 58 07 PM" src="https://github.com/user-attachments/assets/de473561-c846-4deb-97fc-a63f094083ff" />
 
+##🧪 Packet Analysis using Wireshark
+### ✅ Step 1: Start Wireshark (on Victim)
+Open Wireshark
+
+Select your active interface (eth0 or ens33)
+
+Start capturing
+
+### ✅ Step 2: Apply Filters
+ARP Filter
+```wireshark
+arp
+```
+🔍 Look for:
+
+- Multiple ARP replies without corresponding requests
+
+- One IP mapping to multiple MACs
+
+📸 Screenshot:
+We can see that an ARP queries are broadcast.
+
+<img width="1213" alt="Screenshot 2025-05-26 at 11 36 29 PM" src="https://github.com/user-attachments/assets/4031d5ff-5039-451d-9a03-d6bbbb45f953" />
+
+And we can also see in the reply that the MAC assigned with the reply is the MAC address of the attacker.
+
+<img width="1213" alt="Screenshot 2025-05-26 at 11 38 20 PM" src="https://github.com/user-attachments/assets/613ab99b-c201-46a1-a339-a6a5ff9ff2e0" />
+<img width="1213" alt="Screenshot 2025-05-26 at 11 40 16 PM" src="https://github.com/user-attachments/assets/e88a02e5-42f7-4cc7-bd88-e696f270677b" />
+
+
+Multiple IPs (e.g., 192.168.219.146, 192.168.219.147, 192.168.219.158, etc.)
+
+All are resolving to the same MAC address (00:0c:29:8f:b2:51)
+
+This is classic ARP spoofing, where an attacker poisons the ARP cache by sending unsolicited ARP replies, claiming ownership of multiple IP addresses using their own MAC. It allows interception or disruption of traffic meant for others.
+
+
+
+
