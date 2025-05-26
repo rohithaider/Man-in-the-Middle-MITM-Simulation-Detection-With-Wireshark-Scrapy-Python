@@ -2,22 +2,7 @@
 
 > **Project Type**: Cybersecurity Lab  
 > **Environment**: 2 Virtual Machines (Kali Linux + Ubuntu/Windows)  
-> **Goal**: Simulate an ARP Spoofing MITM attack, analyze with Wireshark, and detect using Suricata IDS.
-
----
-
-## 📁 Table of Contents
-
-- [📁 Table of Contents](#-table-of-contents)
-- [📌 Lab Setup](#-lab-setup)
-- [🧰 Tools Required](#-tools-required)
-- [⚙️ Tool Installation](#️-tool-installation)
-- [🚀 Step-by-Step MITM Attack Simulation](#-step-by-step-mitm-attack-simulation)
-- [🧪 Packet Analysis using Wireshark](#-packet-analysis-using-wireshark)
-- [🛡️ Detection using Suricata IDS](#️-detection-using-suricata-ids)
-- [📸 Recommended Screenshots](#-recommended-screenshots)
-- [📚 References](#-references)
-- [⚠️ Legal Disclaimer](#️-legal-disclaimer)
+> **Goal**: Simulate an ARP Spoofing MITM attack, analyze it with Wireshark, and detect it using Python with Scrapy.
 
 ---
 
@@ -26,7 +11,7 @@
 | Role        | VM OS        | IP Example        | Notes                     |
 |-------------|--------------|-------------------|---------------------------|
 | Attacker    | Kali Linux   | `192.168.219.134`  | Runs Bettercap            |
-| Victim      | Ubuntu | `192.168.219.133`  | Runs Wireshark + Suricata |
+| Victim      | Ubuntu | `192.168.219.133`  | Runs Wireshark + Python |
 
 ---
 
@@ -36,7 +21,7 @@
 |--------------|--------------|------------------------------------|
 | Bettercap    | Kali         | Perform ARP Spoofing + MITM attack |
 | Wireshark    | Victim       | Analyze suspicious packets         |
-| Suricata     | Victim       | Detect ARP spoofing (IDS alerts)   |
+| Python     | Victim       | Detect ARP spoofing (Spoofing alerts)   |
 
 ---
 
@@ -134,6 +119,59 @@ Multiple IPs (e.g., 192.168.219.146, 192.168.219.147, 192.168.219.158, etc.)
 All are resolving to the same MAC address (00:0c:29:8f:b2:51)
 
 This is classic ARP spoofing, where an attacker poisons the ARP cache by sending unsolicited ARP replies, claiming ownership of multiple IP addresses using their own MAC. It allows interception or disruption of traffic meant for others.
+
+---
+## 🛡️ Live Detection Using Python
+```python
+from scapy.all import sniff, ARP
+from collections import defaultdict
+
+# Store MAC to IP mappings
+mac_ip_map = defaultdict(set)
+
+# Threshold for suspicious MAC claiming too many IPs
+THRESHOLD = 3
+
+def process_packet(packet):
+    if packet.haslayer(ARP) and packet[ARP].op == 2:  # ARP reply
+        ip = packet[ARP].psrc
+        mac = packet[ARP].hwsrc
+
+        mac_ip_map[mac].add(ip)
+
+        print(f"[+] ARP Reply: {ip} is at {mac}")
+        
+        if len(mac_ip_map[mac]) >= THRESHOLD:
+            print("⚠️  Suspicious Activity Detected!")
+            print(f"    >> MAC {mac} is claiming {len(mac_ip_map[mac])} different IPs:")
+            for claimed_ip in mac_ip_map[mac]:
+                print(f"       - {claimed_ip}")
+            print("-" * 40)
+
+print("📡 Listening for ARP replies... (Press Ctrl+C to stop)\n")
+sniff(filter="arp", prn=process_packet, store=0)
+```
+✅ How to Run:
+```bash
+sudo python3 detection.py
+```
+<img width="822" alt="Screenshot 2025-05-27 at 12 11 57 AM" src="https://github.com/user-attachments/assets/b8e58d80-1e26-4ae5-9f1d-1ffc35c9b1de" />
+
+---
+
+## ⚠️ Legal Disclaimer
+This project is intended for educational use only in isolated, controlled lab environments. Never attempt MITM attacks or any unauthorized access on real or production networks.
+
+---
+
+
+# 👨‍💻 Author
+```Mohtashim Haider,```
+
+```Batch-4, Professional Master's in Information and Cyber Security,```
+
+```University of Dhaka```
+
 
 
 
